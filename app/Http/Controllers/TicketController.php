@@ -14,7 +14,7 @@ class TicketController extends Controller
         return response()->json(Ticket::all());
     }
 
-    public function create(TicketRequest $request): JsonResponse
+    public function store(TicketRequest $request): JsonResponse
     {
         return response()->json(Ticket::create($request->validated()), Response::HTTP_CREATED);
     }
