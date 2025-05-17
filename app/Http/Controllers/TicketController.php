@@ -11,11 +11,16 @@ class TicketController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json(Ticket::all());
+        return response()->json(Ticket::latest()->get());
     }
 
     public function store(TicketRequest $request): JsonResponse
     {
         return response()->json(Ticket::create($request->validated()), Response::HTTP_CREATED);
+    }
+
+    public function update(Ticket $ticket): JsonResponse
+    {
+        return response()->json($ticket->update(['status' => request('status')]));
     }
 }

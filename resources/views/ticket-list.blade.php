@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket List</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- Add this line -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css'])
     @vite(['resources/js/app.js'])
 </head>
@@ -82,7 +82,10 @@
 
     <div class="grid gap-4">
         <template x-for="ticket in tickets" :key="ticket.id">
-            <div class="bg-white p-4 rounded shadow">
+            <a
+                :href="`/tickets/${ticket.id}/replies`"
+                class="block bg-white p-4 rounded shadow hover:shadow-md transition-shadow cursor-pointer"
+            >
                 <div class="flex justify-between items-start">
                     <div>
                         <h3 class="font-semibold text-lg" x-text="ticket.title"></h3>
@@ -94,9 +97,9 @@
                         class="px-2 py-1 rounded text-xs font-medium"
                         :class="ticket.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
                         x-text="ticket.status ? 'Open' : 'Closed'">
-                        </span>
+                    </span>
                 </div>
-            </div>
+            </a>
         </template>
     </div>
 
@@ -149,8 +152,6 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        // Remove the CSRF token line if you're using API routes
-                        // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
                     body: JSON.stringify(this.form)
                 })
