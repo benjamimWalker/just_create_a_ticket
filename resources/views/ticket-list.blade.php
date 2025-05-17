@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket List</title>
     <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- Add this line -->
-    <script src="//unpkg.com/alpinejs" defer></script>
     @vite(['resources/css/app.css'])
+    @vite(['resources/js/app.js'])
 </head>
 <body class="bg-gray-100 p-6">
-<div class="max-w-4xl mx-auto" x-data="ticketApp()" x-init="fetchTickets()">
+<div class="max-w-4xl mx-auto" x-data="ticketApp()" x-init="fetchTickets(); initEcho();">
     <!-- Create Ticket Modal -->
     <div x-show="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md" @click.away="showModal = false">
@@ -117,6 +117,13 @@
                 title: '',
                 status: true,
                 priority: 1
+            },
+
+            initEcho() {
+                Echo.channel('tickets')
+                    .listen('TicketCreated', (e) => {
+                        this.tickets.unshift(e.ticket)
+                    })
             },
 
             fetchTickets() {
