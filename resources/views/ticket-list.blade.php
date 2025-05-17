@@ -127,6 +127,11 @@
                     .listen('TicketCreated', (e) => {
                         this.tickets.unshift(e.ticket)
                     })
+                Echo.channel('tickets.edit')
+                    .listen('TicketUpdated', (e) => {
+                        const index = this.tickets.findIndex(ticket => ticket.id === e.ticket.id);
+                        this.tickets[index].status = !this.tickets[index].status;
+                    })
             },
 
             fetchTickets() {

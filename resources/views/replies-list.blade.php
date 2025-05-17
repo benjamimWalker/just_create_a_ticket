@@ -9,7 +9,7 @@
     @vite(['resources/js/app.js'])
 </head>
 <body class="bg-gray-100 p-6">
-<div class="max-w-4xl mx-auto" x-data="repliesApp()" x-init="fetchReplies()">
+<div class="max-w-4xl mx-auto" x-data="repliesApp()" x-init="fetchReplies(); initEcho();">
     <!-- Header with back button and ticket status toggle -->
     <div class="flex justify-between items-center mb-6">
         <a href="/tickets" class="text-blue-500 hover:text-blue-700 flex items-center">
@@ -69,6 +69,15 @@
             replies: [],
             newReply: '',
             loading: false,
+
+            initEcho() {
+                Echo.channel('tickets.edit')
+                    .listen('TicketUpdated', (e) => {
+                        if (e.ticket.id === this.ticket.id) {
+                            this.ticket.status = e.ticket.status
+                        }
+                    })
+            },
 
             fetchReplies() {
                 this.loading = true;
