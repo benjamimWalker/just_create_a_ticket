@@ -23,5 +23,4 @@ yarn-error.log
 /.zed
 
 # Project exclude paths
-/storage/app/
 /data
