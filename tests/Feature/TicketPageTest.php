@@ -2,6 +2,10 @@
 
 use App\Models\Ticket;
 
+beforeEach(function () {
+    Ticket::unsetEventDispatcher();
+});
+
 test('tickets route renders successfully', function () {
     $this->get('tickets')
         ->assertOk()

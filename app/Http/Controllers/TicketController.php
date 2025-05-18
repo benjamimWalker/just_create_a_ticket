@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TicketRequest;
+use App\Http\Requests\UpdateTicketStatusRequest;
 use App\Models\Ticket;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +20,8 @@ class TicketController extends Controller
         return response()->json(Ticket::create($request->validated()), Response::HTTP_CREATED);
     }
 
-    public function update(Ticket $ticket): JsonResponse
+    public function update(Ticket $ticket, UpdateTicketStatusRequest $request): JsonResponse
     {
-        return response()->json($ticket->update(['status' => request('status')]));
+        return response()->json($ticket->update(['status' => $request->status]));
     }
 }
