@@ -77,6 +77,11 @@
                             this.ticket.status = e.ticket.status
                         }
                     })
+
+                Echo.channel('tickets.' + this.ticket.id)
+                    .listen('ReplyCreated', (e) => {
+                        this.replies.push(e.reply)
+                    })
             },
 
             fetchReplies() {
