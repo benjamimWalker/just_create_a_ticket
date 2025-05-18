@@ -3,7 +3,7 @@ services:
         image: mysql:8.1.0
         command: --default-authentication-plugin=mysql_native_password
         environment:
-            MYSQL_DATABASE: 'chrono-flow'
+            MYSQL_DATABASE: 'just_create_a_ticket'
             MYSQL_ROOT_PASSWORD: ''
             MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
         ports:
