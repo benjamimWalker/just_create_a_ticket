@@ -1,61 +1,109 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://raw.githubusercontent.com/benjamimWalker/just_create_a_ticket/master/assets/logo.png" alt="Project logo" />
+</p>
+<p align="center">
+  <a href="https://github.com/benjamimWalker/just_create_a_ticket/actions/workflows/tests.yml">
+    <img src="https://github.com/benjamimWalker/just_create_a_ticket/actions/workflows/tests.yml/badge.svg" alt="Tests" />
+  </a>
 </p>
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+JCAT is a real-time ticketing system built with Laravel. It focuses on simplicity and instant communication —create a ticket, reply in threads, and get live updates with no page refresh. It’s built for speed, collaboration, and ease of use.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technology
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Key Technologies used:
 
-## Learning Laravel
+* Laravel 12
+* MySQL
+* Redis
+* Nginx
+* Laravel Reverb & Echo (WebSockets)
+* Docker + Docker Compose
+* Alpine.js & Tailwind CSS
+* PestPHP
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Getting started
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+> [!IMPORTANT]  
+> You must have Docker and Docker Compose installed on your machine.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* Clone the repository:
+```sh
+git clone https://github.com/benjamimWalker/just_create_a_ticket.git
+```
 
-## Laravel Sponsors
+* Go to the project folder:
+```sh
+cd just_create_a_ticket
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* Prepare environment files:
+```sh
+cp .env.example .env
+```
 
-### Premium Partners
+* Build the containers:
+```sh
+docker compose up -d
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+* Install composer dependencies:
+```sh
+docker compose exec app composer install
+```
 
-## Contributing
+* Run the migrations:
+```sh
+docker compose exec app php artisan migrate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* Install npm dependencies:
+```sh
+docker compose run --rm npm install
+```
 
-## Code of Conduct
+* Build the assets:
+```sh
+docker compose run --rm npm run build
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* You can now execute the tests:
+```sh
+docker compose exec app php artisan test
+```
 
-## Security Vulnerabilities
+* And finally, start reverb websocket server:
+```sh
+docker compose exec app php artisan reverb:start
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## How to use
 
-## License
+### 1 - Check tickets
+Head to the URL `http://localhost/tickets`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+![image](https://raw.githubusercontent.com/benjamimWalker/just_create_a_ticket/master/assets/tickets-list.png)
+
+### 3 - Create a ticket
+Click the "Create New Ticket" button and fill in the form. You can set a title, priority and status (default for open but you can create a closed for whatever reason)
+
+![image](https://raw.githubusercontent.com/benjamimWalker/just_create_a_ticket/master/assets/ticket-create.png)
+
+### 4 - Check and create a reply
+Click on any ticket. You can see the ticket details and all replies. You can also create a new reply.
+
+![image](https://raw.githubusercontent.com/benjamimWalker/just_create_a_ticket/master/assets/replies.png)
+
+## Features
+
+The main features of the application are:
+- Real-time ticket threads with WebSocket-powered messaging
+- Responsive, lightweight UI with Tailwind and Alpine
+- Instant updates to connected users only (per-thread broadcasting)
+- Status toggling (open/closed) with locked replies on closed tickets
+- Automated tests with Pest. critical paths: creation, validation, messaging
+
+[Benjamim] - [benjamim.sousamelo@gmail.com]<br>
+Github: <a href="https://github.com/benjamimWalker">@benjamimWalker</a>
